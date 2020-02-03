@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Animated, Platform, UIManager, 
-  TouchableOpacity, Text, ViewPropTypes } from 'react-native';
+import {
+  View, StyleSheet, Animated, Platform, UIManager,
+  TouchableOpacity, Text, ViewPropTypes
+} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import Events from 'react-native-simple-events';
 import MapView from 'react-native-maps';
-import Geolocation from '@react-native-community/geolocation';
 import AutoCompleteInput from './AutoCompleteInput';
 
 
@@ -21,6 +22,7 @@ export default class LocationView extends React.Component {
       latitude: PropTypes.number,
       longitude: PropTypes.number,
     }).isRequired,
+    getCurrentLocation: PropTypes.func.isRequired,
     markerColor: PropTypes.string,
     actionButtonStyle: ViewPropTypes.style,
     actionTextStyle: Text.propTypes.style,
@@ -110,24 +112,28 @@ export default class LocationView extends React.Component {
     axios.get(`${PLACE_DETAIL_URL}?key=${this.props.apiKey}&placeid=${placeId}`).then(({ data }) => {
       let region = (({ lat, lng }) => ({ latitude: lat, longitude: lng }))(data.result.geometry.location);
       this._setRegion(region);
-      this.setState({placeDetails: data.result});
+      this.setState({ placeDetails: data.result });
     });
   };
 
   _getCurrentLocation = () => {
-    const { timeout, maximumAge, enableHighAccuracy } = this.props;
-    Geolocation.getCurrentPosition(
-      position => {
-        const { latitude, longitude } = position.coords;
-        this._setRegion({latitude, longitude});
-      },
-      error => console.log(error.message),
-      {
-        enableHighAccuracy,
-        timeout,
-        maximumAge,
-      }
-    );
+    this.props.getCurrentLocation().then(({ latitude, longitude }) => {
+      this._setRegion({ latitude, longitude })
+    }).catch(error => {
+      console.log(error.message)
+    })
+    // Geolocation.getCurrentPosition(
+    //   position => {
+    //     const { latitude, longitude } = position.coords;
+    //     this._setRegion({ latitude, longitude });
+    //   },
+    //   error => console.log(error.message),
+    //   {
+    //     enableHighAccuracy,
+    //     timeout,
+    //     maximumAge,
+    //   }
+    // );
   };
 
   render() {
