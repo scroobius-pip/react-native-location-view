@@ -109,7 +109,7 @@ export default class LocationView extends React.Component {
 
   _onPlaceSelected = placeId => {
     this._input.blur();
-    axios.get(`${PLACE_DETAIL_URL}?key=${this.props.apiKey}&placeid=${placeId}`).then(({ data }) => {
+    axios.get(`${PLACE_DETAIL_URL}?key=${this.props.apiKey}&placeid=${placeId}&fields=name,address_components`).then(({ data }) => {
       let region = (({ lat, lng }) => ({ latitude: lat, longitude: lng }))(data.result.geometry.location);
       this._setRegion(region);
       this.setState({ placeDetails: data.result });

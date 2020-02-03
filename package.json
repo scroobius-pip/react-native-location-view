@@ -1,6 +1,6 @@
 {
-  "name": "react-native-location-view",
-  "version": "0.3.0",
+  "name": "react-native-location-view-simdi",
+  "version": "0.3.1",
   "description": "A package to help pick user location with autocomplete and current location support. Uses react-native-maps",
   "main": "index.js",
   "author": "Hunaid Hassan <hhunaid@gmail.com>",
@@ -46,7 +46,7 @@
   "peerDependencies": {
     "react-native": ">= 0.50",
     "react-native-maps": ">= 0.19.0",
-    "react-native-vector-icons": "^4.4.3",
+    "react-native-vector-icons": "^4.4.3"
   },
   "devDependencies": {
     "eslint": "^6.0.1",
